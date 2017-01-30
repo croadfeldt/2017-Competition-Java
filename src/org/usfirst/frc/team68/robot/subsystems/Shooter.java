@@ -15,7 +15,7 @@ public class Shooter extends Subsystem {
     private static Shooter shooter;
 
     
-    public static Shooter getshooter() {
+    public static Shooter getShooter() {
     	if (shooter == null) {
     		shooter = new Shooter();
     	}

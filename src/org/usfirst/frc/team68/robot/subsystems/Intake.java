@@ -15,7 +15,7 @@ public class Intake extends Subsystem {
     private static Intake intake;
 
     
-    public static Intake getintake() {
+    public static Intake getIntake() {
     	if (intake == null) {
     		intake = new Intake();
     	}

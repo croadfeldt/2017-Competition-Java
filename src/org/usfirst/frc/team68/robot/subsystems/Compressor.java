@@ -15,7 +15,7 @@ public class Compressor extends Subsystem {
     private static Compressor compressor;
 
     
-    public static Compressor getcompressor() {
+    public static Compressor getCompressor() {
     	if (compressor == null) {
     		compressor = new Compressor();
     	}

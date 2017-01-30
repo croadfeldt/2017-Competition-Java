@@ -15,7 +15,7 @@ public class Camera extends Subsystem {
     private static Camera camera;
 
     
-    public static Camera getcamera() {
+    public static Camera getCamera() {
     	if (camera == null) {
     		camera = new Camera();
     	}

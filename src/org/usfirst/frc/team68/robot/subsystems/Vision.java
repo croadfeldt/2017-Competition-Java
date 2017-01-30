@@ -15,7 +15,7 @@ public class Vision extends Subsystem {
     private static Vision vision;
 
     
-    public static Vision getvision() {
+    public static Vision getVision() {
     	if (vision == null) {
     		vision = new Vision();
     	}

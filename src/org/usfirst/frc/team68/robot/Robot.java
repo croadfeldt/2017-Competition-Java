@@ -9,7 +9,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team68.robot.commands.Auton1;
+import org.usfirst.frc.team68.robot.commands.Auton2;
+import org.usfirst.frc.team68.robot.commands.Auton3;
+import org.usfirst.frc.team68.robot.subsystems.Camera;
 import org.usfirst.frc.team68.robot.subsystems.Climber;
+import org.usfirst.frc.team68.robot.subsystems.Compressor;
+import org.usfirst.frc.team68.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team68.robot.subsystems.Gear;
+import org.usfirst.frc.team68.robot.subsystems.Intake;
+import org.usfirst.frc.team68.robot.subsystems.Shooter;
+import org.usfirst.frc.team68.robot.subsystems.Vision;
 
 
 /**
@@ -22,7 +31,14 @@ import org.usfirst.frc.team68.robot.subsystems.Climber;
 public class Robot extends IterativeRobot {
 
 	public static RobotMap robotMap;
+	public static Camera camera;
 	public static Climber climber;
+	public static Compressor compressor;
+	public static DriveTrain driveTrain;
+	public static Gear gear;
+	public static Intake intake;
+	public static Shooter shooter;
+	public static Vision vision;
 	public static OI oi;
 
 
@@ -37,15 +53,24 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		// The RobotMap class should be the first to be instantiated
 		robotMap = RobotMap.getRobotMap();
-		climber = Climber.getClimber();
-		
+
 		// Create a single instance of each Robot subsystem here
+		camera = Camera.getCamera();
+		climber = Climber.getClimber();
+		compressor = Compressor.getCompressor();
+		driveTrain = DriveTrain.getDriveTrain();
+		gear = Gear.getgear();
+		intake = Intake.getIntake();
+		shooter = Shooter.getShooter();
+		vision = Vision.getVision();
 		
-		
-		// The OI class should be the last to be instanstiated
+		// The OI class should be the last to be instantiated
 		oi = OI.getOI();
-		chooser.addDefault("Default Auto", new Auton1());
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		
+		// Create a chooser and set the default for the dashboard
+		chooser.addDefault("Auton 1 (default)", new Auton1());
+		chooser.addObject("Auton 2", new Auton2());
+		chooser.addObject("Auton 3", new Auton3());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 
