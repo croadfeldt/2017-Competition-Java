@@ -30,5 +30,7 @@ public class RobotMap {
     	}
     	return robotMap;
     }
+    
+	// Custom user defined methods should go here
 
 }
