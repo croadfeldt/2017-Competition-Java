@@ -1,5 +1,7 @@
 package org.usfirst.frc.team68.robot;
 
+
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -7,23 +9,9 @@ package org.usfirst.frc.team68.robot;
  * floating around.
  */
 public class RobotMap {
-	// For example to map the left and right motors, you could define the
-	// following variables to use with your drivetrain subsystem.
-	// public static final int leftMotor = 1;
-	// public static final int rightMotor = 2;
-
-	// If you are using multiple modules, make sure to define both the port
-	// number and the module. For example you with a rangefinder:
-	// public static final int rangefinderPort = 1;
-	// public static final int rangefinderModule = 1;
 	
-	//Declare Instance variables here
-	
-	// Declare Class variables here
     private static RobotMap robotMap;
-
-    // Use the Singleton design pattern to ensure that
-    // only one instance of RobotMap will be created
+        
     public static RobotMap getRobotMap() {
     	if( robotMap == null) {
     		robotMap = new RobotMap();
@@ -31,8 +19,21 @@ public class RobotMap {
     	return robotMap;
     }
     
+    public static final int GEAR_IN = 1;
+    public static final int GEAR_OUT = 0;
+    
+    public static final int INTAKE_SPEED_FORWARD = 1;
+    public static final int INTAKE_SPEED_REVERSE = 0;
+    public static final int INTAKE_MOTOR = 2;
+    
+    public static final int CLIMBER_LOCK = 0;
+    public static final int CLIMBER_UNLOCK = 1;
     
     
-	// Custom user defined methods should go here
+    // Custom user defined methods should go here
+    // add a comment
 
+    
 }
+
+
