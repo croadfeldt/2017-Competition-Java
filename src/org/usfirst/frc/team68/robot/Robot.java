@@ -29,7 +29,8 @@ import org.usfirst.frc.team68.robot.subsystems.Vision;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
+	
+	// declare public class variables
 	public static RobotMap robotMap;
 	public static Camera camera;
 	public static Climber climber;
