@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.buttons.Button;
 //import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.buttons.Button;
 
 
 /**
@@ -40,9 +42,28 @@ public class OI {
 	// button.whenReleased(new ExampleCommand());
 	
 	// Declare instance variables here
-	private Joystick leftJoy;
-	private Joystick rightJoy;
-	private XboxController xboxController;
+
+	// Driver's Xbox Controller
+	private XboxController xboxDrive;
+	private Button xboxDriveA;
+	private Button xboxDriveB;
+	private Button xboxDriveX;
+	private Button xboxDriveY;
+	private Button xboxDriveRB;
+	private Button xboxDriveLB;
+	private Button xboxDriveBack;
+	private Button xboxDriveStart;
+	
+	// Manipulators Xbox Controller
+	private XboxController xboxManipulate;
+	private Button xboxManipulateA;
+	private Button xboxManipulateB;
+	private Button xboxManipulateX;
+	private Button xboxManipulateY;
+	private Button xboxManipulateRB;
+	private Button xboxManipulateLB;
+	private Button xboxManipulateBack;
+	private Button xboxManipulateStart;
 	
 	// Declare class variables here
 	private static OI oi;
@@ -59,12 +80,26 @@ public class OI {
 	
 	// Constructor
 	private OI(){
-		//leftJoy = new Joystick(RobotMap.LEFT_JOYSTICK);
-		//rightJoy = new Joystick(RobotMap.RIGHT_JOYSTICK);
-		//xboxController = new XboxController(RobotMap.XBOX_CONTROLLER);
+		xboxDrive = new XboxController(RobotMap.XBOX_DRIVE);	
+		xboxManipulate = new XboxController(RobotMap.XBOX_MANIPULATE);
 				
 	}
 	
 	// Custom user defined methods should go here
+	public double getLeftXboxJoystickValue() {
+		double leftAxis;
+		leftAxis = xboxDrive.getY(Hand.kLeft);
+		// Allow for up to 10% of joystick noise
+		leftAxis = (Math.abs(leftAxis) < 0.1) ? 0 : leftAxis;
+    	return leftAxis;
+	}
+	
+	public double getRightXboxJoystickValue() {
+		double rightAxis;
+		rightAxis = xboxDrive.getY(Hand.kRight);
+		// Allow for up to 10% of joystick noise
+		rightAxis = (Math.abs(rightAxis) < 0.1) ? 0 : rightAxis;
+    	return rightAxis;
+	}
 	
 }

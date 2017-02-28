@@ -1,6 +1,11 @@
 package org.usfirst.frc.team68.robot;
 
-
+/**
+ * The RobotMap is a mapping from the ports sensors and actuators are wired into
+ * to a variable name. This provides flexibility changing wiring, makes checking
+ * the wiring easier and significantly reduces the number of magic numbers
+ * floating around.
+ */
 public class RobotMap {
 	
     private static RobotMap robotMap;
@@ -31,8 +36,8 @@ public class RobotMap {
     public static final int CLIMBER_LATCH_OPEN = 3;
     public static final int CLIMBER_LATCH_CLOSE = 4;
     
-    public static final int XBOX_DRIVE_CONTROLLER = 0;
-    public static final int XBOX_MANIPULATOR_CONTROLLER = 1;
+    public static final int XBOX_DRIVE = 0;
+    public static final int XBOX_MANIPULATE = 1;
     
     public static final int XBOX_DRIVE_B = 2;
     public static final int XBOX_DRIVE_X = 3;

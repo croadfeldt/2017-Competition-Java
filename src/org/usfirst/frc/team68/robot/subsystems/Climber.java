@@ -1,19 +1,20 @@
 
 package org.usfirst.frc.team68.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
+import org.usfirst.frc.team68.robot.RobotMap;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- *
- */
+
+
 public class Climber extends Subsystem {
     
-	// Declare instance variables here
-
-    
-    // Declare Class variables here
-    private static Climber climber;
-
+	private DoubleSolenoid climberLatch;
+	private static Climber climber;
+ 
     
     public static Climber getClimber() {
     	if (climber == null) {
@@ -22,17 +23,24 @@ public class Climber extends Subsystem {
     	return climber;
     }
     
-    // Constructor
+   
     private Climber() {
-
+ 
+    	climberLatch = new DoubleSolenoid(RobotMap.CLIMBER_LATCH_OPEN, RobotMap.CLIMBER_LATCH_CLOSE);
+    	
+    	
     }
     
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-    	// setDefaultCommand(new Command() );
+   
     }
-    
-    // Create custom methods here
 
-}
-
+	
+	 public void climberLock() {
+	    	climberLatch.set(Value.kForward);
+	    }
+	    
+	    public void climberUnlock() {
+	    	climberLatch.set(Value.kReverse);
+	    }
+	}
