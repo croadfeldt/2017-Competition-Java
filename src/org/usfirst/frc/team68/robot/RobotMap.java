@@ -19,15 +19,6 @@ public class RobotMap {
     	return robotMap;
     }
     
-    public static final int GEAR_IN = 1;
-    public static final int GEAR_OUT = 0;
-    
-    public static final int INTAKE_SPEED_FORWARD = 1;
-    public static final int INTAKE_SPEED_REVERSE = 0;
-    public static final int INTAKE_MOTOR = 2;
-    
-    public static final int CLIMBER_LOCK = 0;
-    public static final int CLIMBER_UNLOCK = 1;
     
     
     // Custom user defined methods should go here
