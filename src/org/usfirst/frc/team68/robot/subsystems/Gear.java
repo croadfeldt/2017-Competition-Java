@@ -29,14 +29,15 @@ public class Gear extends Subsystem
     
     public void initDefaultCommand() 
     {
-
+    	//Gear pouch in or out when started up
     }
     public boolean isGearPouchOut() 
     {
     	if(gearPouch.get() == Value.kForward) 
     	{
     		return true;
-    	} else 
+    	}
+    	else 
     	{
     		return false;
     	}
@@ -53,12 +54,12 @@ public class Gear extends Subsystem
     {
     	if(gearPouch.get() == Value.kForward) 
     	{
-    		this.gearPouchOut(); 
+    		this.gearPouchIn(); 
     	} 
     	
-    	else 
+    	else
     	{
-    		this.gearPouchIn();
+    		this.gearPouchOut();
     	}
     }
 }
