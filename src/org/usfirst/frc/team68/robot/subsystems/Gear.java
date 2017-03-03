@@ -23,42 +23,34 @@ public class Gear extends Subsystem
     
     private Gear() 
     {
-    	gearPouch = new DoubleSolenoid(RobotMap.GEAR_OUT, RobotMap.GEAR_IN); 
+    	gearPouch = new DoubleSolenoid(RobotMap.PCM_MAIN, RobotMap.GEAR_OUT, RobotMap.GEAR_IN); 
     	
     }
     
-    public void initDefaultCommand() 
-    {
+    public void initDefaultCommand() {
     	//Gear pouch in or out when started up
     }
-    public boolean isGearPouchOut() 
-    {
-    	if(gearPouch.get() == Value.kForward) 
-    	{
+    
+    public boolean isGearPouchOut() {
+    	if(gearPouch.get() == Value.kForward) {
     		return true;
-    	}
-    	else 
-    	{
+    	} else {
     		return false;
     	}
     }
-    public void gearPouchOut() 
-    {
+    
+    public void gearPouchOut() {
     	gearPouch.set(Value.kForward);
     }
-    public void gearPouchIn() 
-    {
+    
+    public void gearPouchIn() {
     	gearPouch.set(Value.kReverse);
     }
-    public void reverseCurrentGearPouchPosition() 
-    {
-    	if(gearPouch.get() == Value.kForward) 
-    	{
+    
+    public void reverseCurrentGearPouchPosition() {
+    	if(gearPouch.get() == Value.kForward) {
     		this.gearPouchIn(); 
-    	} 
-    	
-    	else
-    	{
+    	} else {
     		this.gearPouchOut();
     	}
     }

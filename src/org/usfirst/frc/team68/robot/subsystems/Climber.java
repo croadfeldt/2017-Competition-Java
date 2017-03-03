@@ -26,8 +26,7 @@ public class Climber extends Subsystem {
    
     private Climber() {
  
-    	climberLatch = new DoubleSolenoid(RobotMap.CLIMBER_LATCH_OPEN, RobotMap.CLIMBER_LATCH_CLOSE);
-    	
+    	climberLatch = new DoubleSolenoid(RobotMap.PCM_MAIN, RobotMap.CLIMBER_LOCK, RobotMap.CLIMBER_UNLOCK);
     	
     }
     
@@ -37,10 +36,11 @@ public class Climber extends Subsystem {
 
 	
 	 public void climberLock() {
-	    	climberLatch.set(Value.kForward);
-	    }
+	    climberLatch.set(Value.kForward);
+	 }
 	    
-	    public void climberUnlock() {
-	    	climberLatch.set(Value.kReverse);
-	    }
-	}
+	 public void climberUnlock() {
+    	climberLatch.set(Value.kReverse);
+	 }
+	 
+}

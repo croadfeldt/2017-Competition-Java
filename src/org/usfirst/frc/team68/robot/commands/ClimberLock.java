@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj.command.Command;
 
 
 
-public class OpenClimberLatch extends Command {
+public class ClimberLock extends Command {
 	boolean isFinished = false;
 
-    public OpenClimberLatch() {
+    public ClimberLock() {
     	requires(Robot.climber);
     }
 
@@ -17,7 +17,7 @@ public class OpenClimberLatch extends Command {
     }
 
     protected void execute() {
-    	Robot.climber.climberUnlock();
+    	Robot.climber.climberLock();
     	isFinished = true;
     }
 

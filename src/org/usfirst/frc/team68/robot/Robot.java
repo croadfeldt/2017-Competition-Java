@@ -42,7 +42,6 @@ public class Robot extends IterativeRobot {
 	public static Vision vision;
 	public static OI oi;
 
-
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -65,14 +64,14 @@ public class Robot extends IterativeRobot {
 		shooter = Shooter.getShooter();
 		vision = Vision.getVision();
 		
-		// The OI class should be the last to be instantiated
-		oi = OI.getOI();
-		
 		// Create a chooser and set the default for the dashboard
 		chooser.addDefault("Auton 1 (default)", new Auton1());
 		chooser.addObject("Auton 2", new Auton2());
 		chooser.addObject("Auton 3", new Auton3());
 		SmartDashboard.putData("Auto mode", chooser);
+		
+		// The OI class should be the last to be instantiated
+		oi = OI.getOI();
 	}
 
 	/**

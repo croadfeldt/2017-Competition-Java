@@ -6,7 +6,8 @@ import org.usfirst.frc.team68.robot.Robot;
 
 
 public class DriveWithXboxJoysticks extends Command {
-		boolean isFinished = false;
+	
+	boolean isFinished = false;
 	
 	
 	public DriveWithXboxJoysticks() {

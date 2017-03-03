@@ -2,10 +2,12 @@ package org.usfirst.frc.team68.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-//import edu.wpi.first.wpilibj.buttons.Button;
-//import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
+import org.usfirst.frc.team68.robot.commands.*;
+
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 
 /**
@@ -79,13 +81,51 @@ public class OI {
 	}
 	
 	// Constructor
-	private OI(){
+	private OI() {
+		
 		xboxDrive = new XboxController(RobotMap.XBOX_DRIVE);	
 		xboxManipulate = new XboxController(RobotMap.XBOX_MANIPULATE);
+		
+		xboxDriveX = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_X);
+		xboxDriveX.whenPressed(new ClimberLock());
+
+		xboxDriveY = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_Y);
+		xboxDriveY.whenPressed(new ClimberUnlock());
+		
+		xboxDriveLB = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_LB);
+		xboxDriveLB.whenPressed(new DriveShiftLow());
+		
+		xboxDriveY = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_RB);
+		xboxDriveY.whenPressed(new DriveShiftHigh());
+		
+		xboxManipulateX = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_X);
+		xboxManipulateX.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_SHORT, RobotMap.SHOOTER_HOOD_SHORT));
+
+		xboxManipulateA = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_A);
+		xboxManipulateA.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_MEDIUM, RobotMap.SHOOTER_HOOD_MEDIUM));
+		
+		xboxManipulateB = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_B);
+		xboxManipulateB.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_LONG, RobotMap.SHOOTER_HOOD_LONG));
+		
+		xboxManipulateY = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_Y);
+		xboxManipulateY.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_STOP, RobotMap.SHOOTER_HOOD_STOP ));
+		
+		xboxManipulateLB = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_LB);
+		xboxManipulateLB.whileHeld(new IntakeForward());
+		
+		xboxManipulateRB = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_RB);
+		xboxManipulateRB.whenPressed(new ShooterFeederForward());
+		
+		xboxManipulateStart = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_BS);
+		xboxManipulateStart.whenPressed(new GearPouchOut());
+		
+		xboxManipulateBack = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_BB);
+		xboxManipulateBack.whenPressed(new GearPouchIn());
 				
 	}
 	
 	// Custom user defined methods should go here
+	
 	public double getLeftXboxJoystickValue() {
 		double leftAxis;
 		leftAxis = xboxDrive.getY(Hand.kLeft);
@@ -98,6 +138,21 @@ public class OI {
 		double rightAxis;
 		rightAxis = xboxDrive.getY(Hand.kRight);
 		// Allow for up to 10% of joystick noise
+		rightAxis = (Math.abs(rightAxis) < 0.1) ? 0 : rightAxis;
+    	return rightAxis;
+	}
+	
+	public double getXboxManipulateLT() {
+		double leftAxis;
+		leftAxis = xboxManipulate.getRawAxis(RobotMap.XBOX_MANIPULATE_LT);
+		// Allow for up to 10% of joystick noise
+		leftAxis = (Math.abs(leftAxis) < 0.1) ? 0 : leftAxis;
+    	return leftAxis;
+	}
+	
+	public double getXboxManipulateRT() {
+		double rightAxis;
+		rightAxis = xboxManipulate.getRawAxis(RobotMap.XBOX_MANIPULATE_RT);
 		rightAxis = (Math.abs(rightAxis) < 0.1) ? 0 : rightAxis;
     	return rightAxis;
 	}
