@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team68.robot.commands.Auton1;
 import org.usfirst.frc.team68.robot.commands.Auton2;
 import org.usfirst.frc.team68.robot.commands.Auton3;
-import org.usfirst.frc.team68.robot.subsystems.Camera;
 import org.usfirst.frc.team68.robot.subsystems.Climber;
 import org.usfirst.frc.team68.robot.subsystems.Compressor;
 import org.usfirst.frc.team68.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team68.robot.subsystems.Gear;
 import org.usfirst.frc.team68.robot.subsystems.Intake;
 import org.usfirst.frc.team68.robot.subsystems.Shooter;
-import org.usfirst.frc.team68.robot.subsystems.Shooter2;
+
+import org.usfirst.frc.team68.robot.subsystems.USBCamera;
 import org.usfirst.frc.team68.robot.subsystems.Vision;
 
 
@@ -33,7 +33,7 @@ public class Robot extends IterativeRobot {
 	
 	// declare public class variables
 	public static RobotMap robotMap;
-	public static Camera camera;
+	public static USBCamera usbCamera;
 	public static Climber climber;
 	public static Compressor compressor;
 	public static DriveTrain driveTrain;
@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot {
 		robotMap = RobotMap.getRobotMap();
 
 		// Create a single instance of each Robot subsystem here
-		camera = Camera.getCamera();
+		usbCamera = USBCamera.getCamera();
 		climber = Climber.getClimber();
 		compressor = Compressor.getCompressor();
 		driveTrain = DriveTrain.getDriveTrain();

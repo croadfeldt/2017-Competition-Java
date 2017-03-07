@@ -21,13 +21,13 @@ public class RobotMap {
     public static final int DRIVETRAIN_RIGHT_FRONT = 3;
     public static final int DRIVETRAIN_LEFT_REAR = 2;
     public static final int DRIVETRAIN_RIGHT_REAR = 4;
+    public static final int DRIVETRAIN_SHIFT_LOW = 1;
+    public static final int DRIVETRAIN_SHIFT_HIGH = 0;
+    public static final double DRIVETRAIN_AUTON_SPEED = .4;
 
 
     public static final int GEAR_IN = 5;
     public static final int GEAR_OUT = 4;
-
-    public static final int DRIVETRAIN_SHIFT_LOW = 1;
-    public static final int DRIVETRAIN_SHIFT_HIGH = 0;
     
     public static final double INTAKE_SPEED_FORWARD = 1.0;
     public static final double INTAKE_SPEED_STOP = 0;
