@@ -18,6 +18,7 @@ import org.usfirst.frc.team68.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team68.robot.subsystems.Gear;
 import org.usfirst.frc.team68.robot.subsystems.Intake;
 import org.usfirst.frc.team68.robot.subsystems.Shooter;
+import org.usfirst.frc.team68.robot.subsystems.Shooter2;
 import org.usfirst.frc.team68.robot.subsystems.Vision;
 
 
@@ -61,8 +62,9 @@ public class Robot extends IterativeRobot {
 		driveTrain = DriveTrain.getDriveTrain();
 		gear = Gear.getgear();
 		intake = Intake.getIntake();
+//		shooter2 = Shooter2.getShooter2();
 		shooter = Shooter.getShooter();
-		vision = Vision.getVision();
+//		vision = Vision.getVision();
 		
 		// Create a chooser and set the default for the dashboard
 		chooser.addDefault("Auton 1 (default)", new Auton1());
@@ -140,6 +142,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+//		System.out.println(shooter.getPIDReport());
 	}
 
 	/**

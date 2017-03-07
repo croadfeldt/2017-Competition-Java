@@ -26,7 +26,7 @@ public class ShooterFeederReverse extends Command {
 	@Override
 	protected void execute() {
 		
-		Robot.shooter.setShooterFeederReverse(Robot.oi.getXboxManipulateRT());
+		Robot.shooter.setShooterFeederReverse(Robot.oi.getXboxManipulateRT()*-1);
 
 	}
 

@@ -24,6 +24,9 @@ public class Shooter extends Subsystem {
 	private VictorSP shooterFeeder;
 	
 	private Servo hoodServo;
+	
+	StringBuilder reportPID = new StringBuilder();
+	double targetSpeed = 0;
 
     
     // Declare Class variables here
@@ -43,19 +46,20 @@ public class Shooter extends Subsystem {
     	shooterPrimary = new CANTalon(RobotMap.SHOOTER_PRIMARY_MOTOR);
        	shooterPrimary.changeControlMode(TalonControlMode.Speed);
     	this.setShooterSpeed(0);
+
     	
-    	shooterFollower = new CANTalon(RobotMap.SHOOTER_FOLLOWER_MOTOR);
+//    	shooterFollower = new CANTalon(RobotMap.SHOOTER_FOLLOWER_MOTOR);
     	//shooter2.setInverted(true);
-    	shooterFollower.changeControlMode(TalonControlMode.Follower);
-    	shooterFollower.set(shooterPrimary.getDeviceID());
+//    	shooterFollower.changeControlMode(TalonControlMode.Follower);
+//    	shooterFollower.set(shooterPrimary.getDeviceID());
     	
-    	shooterPrimary.enableBrakeMode(false);
-    	shooterFollower.enableBrakeMode(false);
+//    	shooterPrimary.enableBrakeMode(false);
+//    	shooterFollower.enableBrakeMode(false);
     	
     	shooterPrimary.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-    	shooterPrimary.reverseSensor(false);
-    	shooterPrimary.configNominalOutputVoltage(+0.0F,-0.0F);
-    	shooterPrimary.configPeakOutputVoltage(+12.0f, 0.0f);
+    	shooterPrimary.reverseSensor(true);
+    	shooterPrimary.configNominalOutputVoltage(+0.0f,-0.0f);
+    	shooterPrimary.configPeakOutputVoltage(+12.0f, -12.0f);
     	//shooterPrimary.setVoltageRampRate(8);
     	
     	// set closed loop gains for slot 0
@@ -66,6 +70,7 @@ public class Shooter extends Subsystem {
     	shooterPrimary.setD(RobotMap.SHOOTER_PID_D);
     	
     	shooterFeeder = new VictorSP(RobotMap.SHOOTER_FEEDER_MOTOR);
+    	shooterFeeder.setInverted(true);
     	
 		hoodServo = new Servo(3);
 
@@ -79,7 +84,11 @@ public class Shooter extends Subsystem {
     
     // Create custom methods here
     public void setShooterSpeed(double speed) {
-
+       	
+    	targetSpeed = speed;
+       	if( shooterPrimary.getControlMode() == TalonControlMode.Speed )
+       		System.out.println("Speed");
+    	
     	shooterPrimary.set(speed);
     	System.out.println("Set the RPMs to :" + speed);
    	
@@ -91,20 +100,20 @@ public class Shooter extends Subsystem {
         	Timer.delay(.4);
     	} 
 */    	
-    	shooterFeeder.set(RobotMap.SHOOTER_FEEDER_SPEED_FORWARD);
+    	shooterFeeder.set(speed);
     }
     
     public void setShooterFeederReverse(double speed)  {
- /*   	if( this.getShooterFeederSpeed() > 0) {
+/*    	if( this.getShooterFeederSpeed() > 0) {
         	shooterFeeder.set(RobotMap.SHOOTER_FEEDER_SPEED_STOP);
         	Timer.delay(.4);
-    	} 
-*/   	
+    	}    	
     	double setSpeed = 0;
     	
     	setSpeed = speed > 0 ? RobotMap.SHOOTER_FEEDER_SPEED_REVERSE : 0;
+ */
     	
-    	shooterFeeder.set(setSpeed*-1);
+    	shooterFeeder.set(speed);
   
     }
     
@@ -118,6 +127,24 @@ public class Shooter extends Subsystem {
     
     public void setHood(double position) {
     	hoodServo.set(position);
+    }
+    
+    public String getPIDReport() {
+    	
+    	double motorOutput = shooterPrimary.getOutputVoltage() / shooterPrimary.getBusVoltage();
+    	
+    	reportPID.setLength(0);
+    	
+    	reportPID.append("\tout:");
+    	reportPID.append(motorOutput);
+    	reportPID.append("\tspd:");
+    	reportPID.append(shooterPrimary.getSpeed() );
+    	reportPID.append("\terr:");
+    	reportPID.append(shooterPrimary.getClosedLoopError());
+    	reportPID.append("\ttrg:");
+    	reportPID.append(targetSpeed);
+
+    	return reportPID.toString();
     }
 
 

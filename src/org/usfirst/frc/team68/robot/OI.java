@@ -95,14 +95,17 @@ public class OI {
 		xboxDriveLB = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_LB);
 		xboxDriveLB.whenPressed(new DriveShiftLow());
 		
-		xboxDriveY = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_RB);
-		xboxDriveY.whenPressed(new DriveShiftHigh());
+		xboxDriveRB = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_RB);
+		xboxDriveRB.whenPressed(new DriveShiftHigh());
+		
+		xboxDriveStart = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_BS);
+		xboxDriveStart.whenPressed(new DriveReverseOrientation());
 		
 		xboxManipulateX = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_X);
 		xboxManipulateX.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_SHORT, RobotMap.SHOOTER_HOOD_SHORT));
 
 		xboxManipulateA = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_A);
-		xboxManipulateA.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_MEDIUM, RobotMap.SHOOTER_HOOD_MEDIUM));
+		xboxManipulateA.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_MEDIUM, RobotMap.SHOOTER_HOOD_SHORT));
 		
 		xboxManipulateB = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_B);
 		xboxManipulateB.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_LONG, RobotMap.SHOOTER_HOOD_LONG));
@@ -114,7 +117,7 @@ public class OI {
 		xboxManipulateLB.whileHeld(new IntakeForward());
 		
 		xboxManipulateRB = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_RB);
-		xboxManipulateRB.whenPressed(new ShooterFeederForward());
+		xboxManipulateRB.whileHeld(new ShooterFeederForward());
 		
 		xboxManipulateStart = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_BS);
 		xboxManipulateStart.whenPressed(new GearPouchOut());
@@ -156,5 +159,12 @@ public class OI {
 		rightAxis = (Math.abs(rightAxis) < 0.1) ? 0 : rightAxis;
     	return rightAxis;
 	}
+	
+	public double getLeftXboxJoystick() {
+		double leftAxis;
+		leftAxis = xboxManipulate.getY(Hand.kLeft);
+    	return leftAxis;
+	}
+
 	
 }

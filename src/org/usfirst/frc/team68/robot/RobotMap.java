@@ -17,21 +17,21 @@ public class RobotMap {
     	return robotMap;
     }
      
-    public static final int DRIVETRAIN_FL = 1;
-    public static final int DRIVETRAIN_FR = 3;
-    public static final int DRIVETRAIN_RL = 2;
-    public static final int DRIVETRAIN_RR = 4;
+    public static final int DRIVETRAIN_LEFT_FRONT = 1;
+    public static final int DRIVETRAIN_RIGHT_FRONT = 3;
+    public static final int DRIVETRAIN_LEFT_REAR = 2;
+    public static final int DRIVETRAIN_RIGHT_REAR = 4;
 
 
     public static final int GEAR_IN = 5;
     public static final int GEAR_OUT = 4;
 
-    public static final int DRIVETRAIN_SHIFT_LOW = 5;
-    public static final int DRIVETRAIN_SHIFT_HIGH = 6;
+    public static final int DRIVETRAIN_SHIFT_LOW = 1;
+    public static final int DRIVETRAIN_SHIFT_HIGH = 0;
     
-    public static final double INTAKE_SPEED_FORWARD = 0.5;
+    public static final double INTAKE_SPEED_FORWARD = 1.0;
     public static final double INTAKE_SPEED_STOP = 0;
-    public static final double INTAKE_SPEED_REVERSE = -0.5;
+    public static final double INTAKE_SPEED_REVERSE = -1.0;
     public static final int INTAKE_MOTORS = 1;  						// Two motors PWM channel 1 with Y cable
     
     public static final int CLIMBER_LOCK = 3;
@@ -56,33 +56,33 @@ public class RobotMap {
     public static final int XBOX_MANIPULATE_B = 2;
     public static final int XBOX_MANIPULATE_X = 3;
     public static final int XBOX_MANIPULATE_Y = 4;
-    public static final int XBOX_MANIPULATE_RB = 5;
-    public static final int XBOX_MANIPULATE_LB = 6;
+    public static final int XBOX_MANIPULATE_RB = 6;
+    public static final int XBOX_MANIPULATE_LB = 5;
     public static final int XBOX_MANIPULATE_LT = 2;
     public static final int XBOX_MANIPULATE_RT = 3;
     public static final int XBOX_MANIPULATE_BB = 7;    
     public static final int XBOX_MANIPULATE_BS = 8;
     
 
-    public static final double SHOOTER_FEEDER_SPEED_FORWARD = 0.3;
+    public static final double SHOOTER_FEEDER_SPEED_FORWARD = 1;
     public static final double SHOOTER_FEEDER_SPEED_STOP = 0;
     public static final double SHOOTER_FEEDER_SPEED_REVERSE = -0.3;
     public static final int SHOOTER_FEEDER_MOTOR = 2;
     public static final int SHOOTER_PRIMARY_MOTOR = 5;  	
     public static final int SHOOTER_FOLLOWER_MOTOR = 6; 	
     public static final double SHOOTER_SPEED_STOP = 0;
-    public static final double SHOOTER_SPEED_SHORT = 300;
-    public static final double SHOOTER_SPEED_MEDIUM = 600;
-    public static final double SHOOTER_SPEED_LONG = 1000;
+    public static final double SHOOTER_SPEED_SHORT = 500;
+    public static final double SHOOTER_SPEED_MEDIUM = 1000;
+    public static final double SHOOTER_SPEED_LONG = 2000;
     public static final double SHOOTER_HOOD_SHORT = .3;
     public static final double SHOOTER_HOOD_MEDIUM = .6;
     public static final double SHOOTER_HOOD_LONG = .9;
     public static final double SHOOTER_HOOD_STOP = .1;
     
     public static final int SHOOTER_PID_SLOT = 0;
-    public static final double SHOOTER_PID_F = 0.0;
-    public static final double SHOOTER_PID_P = 0.210;
-    public static final double SHOOTER_PID_I = 0.0000264;
+    public static final double SHOOTER_PID_F = 0.1097;
+    public static final double SHOOTER_PID_P = 0.22;
+    public static final double SHOOTER_PID_I = 0.0;
     public static final double SHOOTER_PID_D = 0.0;
 
     public static final int PCM_MAIN = 9;

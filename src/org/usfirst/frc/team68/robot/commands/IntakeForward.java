@@ -45,6 +45,5 @@ public class IntakeForward extends Command {
 	@Override
 	protected void interrupted() {
 		Robot.intake.setIntakeSpeed(RobotMap.INTAKE_SPEED_STOP);
-		isFinished = true;
 	}
 }

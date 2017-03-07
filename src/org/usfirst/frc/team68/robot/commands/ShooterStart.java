@@ -29,8 +29,9 @@ public class ShooterStart extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.shooter.setHood(position);
+//		Robot.shooter.setHood(position);
 		Robot.shooter.setShooterSpeed(speed);
+		System.out.println("In ShooterStart Command.  Parm values : Hood = " + position + " Speed = " + speed);
 		isFinished = true;
 	}
 

@@ -27,7 +27,6 @@ public class ShooterFeederForward extends Command {
 	@Override
 	protected void execute() {
 		Robot.shooter.setShooterFeeder(RobotMap.SHOOTER_FEEDER_SPEED_FORWARD);
-		isFinished = true;
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -45,6 +44,6 @@ public class ShooterFeederForward extends Command {
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-
+		Robot.shooter.setShooterFeeder(RobotMap.SHOOTER_FEEDER_SPEED_STOP);
 	}
 }

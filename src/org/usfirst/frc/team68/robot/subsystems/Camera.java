@@ -2,6 +2,7 @@
 package org.usfirst.frc.team68.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.CameraServer;
 
 /**
  *
@@ -13,6 +14,7 @@ public class Camera extends Subsystem {
     
     // Declare Class variables here
     private static Camera camera;
+	private CameraServer cameraUSB0;
 
     
     public static Camera getCamera() {
@@ -24,7 +26,7 @@ public class Camera extends Subsystem {
     
     // Constructor
     private Camera() {
-
+    	cameraUSB0.startAutomaticCapture(0);
     }
     
     public void initDefaultCommand() {

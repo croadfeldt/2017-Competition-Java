@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team68.robot.RobotMap;
 import org.usfirst.frc.team68.robot.commands.DriveWithXboxJoysticks;
 
@@ -12,12 +14,14 @@ import com.ctre.CANTalon;
 
 public class DriveTrain extends Subsystem {
 	
-	private CANTalon driveTrain_FL;
-	private CANTalon driveTrain_FR;
-	private CANTalon driveTrain_RL;
-	private CANTalon driveTrain_RR;
+	private CANTalon leftFront;
+	private CANTalon rightFront;
+	private CANTalon leftRear;
+	private CANTalon rightRear;
 	private RobotDrive drive;
 	private DoubleSolenoid driveShifter;
+	private double driveOrientation;
+	
 	public static DriveTrain driveTrain;
 
 	
@@ -29,28 +33,28 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private DriveTrain() {
-		
 
-		driveTrain_RL = new CANTalon(RobotMap.DRIVETRAIN_RL);
-		driveTrain_RR = new CANTalon(RobotMap.DRIVETRAIN_RR);
+		leftRear = new CANTalon(RobotMap.DRIVETRAIN_LEFT_REAR);
+		rightRear = new CANTalon(RobotMap.DRIVETRAIN_RIGHT_REAR);
 		
-		driveTrain_FL = new CANTalon(RobotMap.DRIVETRAIN_FL);
-		driveTrain_FL.changeControlMode(CANTalon.TalonControlMode.Follower);
-		driveTrain_FL.set(driveTrain_RL.getDeviceID());
+		leftFront = new CANTalon(RobotMap.DRIVETRAIN_LEFT_FRONT);
+		leftFront.changeControlMode(CANTalon.TalonControlMode.Follower);
+		leftFront.set(leftRear.getDeviceID());
     	
-		driveTrain_FR = new CANTalon(RobotMap.DRIVETRAIN_FR);
-		driveTrain_FR.changeControlMode(CANTalon.TalonControlMode.Follower);
-		driveTrain_FR.set(driveTrain_RR.getDeviceID());
+		rightFront = new CANTalon(RobotMap.DRIVETRAIN_RIGHT_FRONT);
+		rightFront.changeControlMode(CANTalon.TalonControlMode.Follower);
+		rightFront.set(rightRear.getDeviceID());
 		
 		
-		drive = new RobotDrive(driveTrain_RL, driveTrain_RR);
+		drive = new RobotDrive(leftRear, rightRear);
 		drive.setSafetyEnabled(true);
 
+		// Initialize the drive orientation.  We start with the orientation of
+		// robot front = intake. 
+		driveOrientation = -1;  // note that pushing forward on the joystick returns negative values
 	
-	
-	driveShifter = new DoubleSolenoid(RobotMap.DRIVETRAIN_SHIFT_LOW, RobotMap.DRIVETRAIN_SHIFT_HIGH);
-	this.setShifterLow();
-	
+		driveShifter = new DoubleSolenoid(RobotMap.PCM_MAIN, RobotMap.DRIVETRAIN_SHIFT_LOW, RobotMap.DRIVETRAIN_SHIFT_HIGH);
+		this.setShifterLow();
 	
 	}
 	
@@ -59,31 +63,44 @@ public class DriveTrain extends Subsystem {
 	   	setDefaultCommand(new DriveWithXboxJoysticks());
 	}
 	
-	   public void setShifterHigh() {
-	    	driveShifter.set(Value.kForward);
-	
-	    }
-	    
-	    public void setShifterLow() {
-	    	driveShifter.set(Value.kReverse);
-	    	
-	    }
-	    
-	    public void shift() {
-	    	if(this.getShifter() == Value.kForward){
-	    	  	this.setShifterLow();
-	    	} else {
-	    		this.setShifterHigh();
-	    	}
-	    }
-	    
-	    public DoubleSolenoid.Value getShifter() {
-	    	return driveShifter.get();
-	    }
-	
+    public double getDriveOrientation() {
+    	return driveOrientation;
+    }
+    
+    public void setShifterHigh() {
+    	driveShifter.set(Value.kForward);
+    }
+    
+    public void setShifterLow() {
+    	driveShifter.set(Value.kReverse);
+    }
+    
+    public void setDriveOrientation() {
+    	// Reverse the current drive orientation
+    	driveOrientation = driveOrientation * -1;
+    	// update the dashboard to reflect the current drive orientation
+    	SmartDashboard.putNumber("Drive Orientation: ", driveOrientation);
+    }
+    
+    public void zeroEncoders(){
+    	leftRear.setPosition(0);
+    	rightRear.setPosition(0);
+    }
 
-	    public void tankDrive(double leftSpeed, double rightSpeed) {
+    
+    public void shift() {
+    	if(this.getShifter() == Value.kForward){
+    	  	this.setShifterLow();
+    	} else {
+    		this.setShifterHigh();
+    	}
+    }
+    
+    public DoubleSolenoid.Value getShifter() {
+    	return driveShifter.get();
+    }
 
-	    	drive.tankDrive(leftSpeed*-1, rightSpeed*-1, true);
+    public void tankDrive(double leftSpeed, double rightSpeed) {
+    	drive.tankDrive(leftSpeed*driveOrientation, rightSpeed*driveOrientation, true);    	
     }
 }
