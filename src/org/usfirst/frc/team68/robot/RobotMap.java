@@ -80,10 +80,10 @@ public class RobotMap {
     public static final double SHOOTER_HOOD_STOP = .1;
     
     public static final int SHOOTER_PID_SLOT = 0;
-    public static final double SHOOTER_PID_F = 0.1097;
-    public static final double SHOOTER_PID_P = 0.22;
-    public static final double SHOOTER_PID_I = 0.0;
-    public static final double SHOOTER_PID_D = 0.0;
+    public static final double SHOOTER_PID_F = 0.0;
+    public static final double SHOOTER_PID_P = 0.21;
+    public static final double SHOOTER_PID_I = 0.0000264;
+    public static final double SHOOTER_PID_D = 0.0000000002;
 
     public static final int PCM_MAIN = 9;
     

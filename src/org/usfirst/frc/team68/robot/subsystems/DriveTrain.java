@@ -2,6 +2,7 @@ package org.usfirst.frc.team68.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +21,9 @@ public class DriveTrain extends Subsystem {
 	private CANTalon rightRear;
 	private RobotDrive drive;
 	private DoubleSolenoid driveShifter;
-	private double driveOrientation;
+	private boolean reverseDrive;
+	private Relay gearLights;
+	private Relay intakeLights;
 	
 	public static DriveTrain driveTrain;
 
@@ -51,10 +54,13 @@ public class DriveTrain extends Subsystem {
 
 		// Initialize the drive orientation.  We start with the orientation of
 		// robot front = intake. 
-		driveOrientation = -1;  // note that pushing forward on the joystick returns negative values
+		reverseDrive = true;  // note that pushing forward on the joystick returns negative values
 	
 		driveShifter = new DoubleSolenoid(RobotMap.PCM_MAIN, RobotMap.DRIVETRAIN_SHIFT_LOW, RobotMap.DRIVETRAIN_SHIFT_HIGH);
 		this.setShifterLow();
+		
+		gearLights = new Relay(0);
+		intakeLights = new Relay(1);
 	
 	}
 	
@@ -63,8 +69,8 @@ public class DriveTrain extends Subsystem {
 	   	setDefaultCommand(new DriveWithXboxJoysticks());
 	}
 	
-    public double getDriveOrientation() {
-    	return driveOrientation;
+    public boolean getDriveOrientation() {
+    	return reverseDrive;
     }
     
     public void setShifterHigh() {
@@ -77,9 +83,9 @@ public class DriveTrain extends Subsystem {
     
     public void setDriveOrientation() {
     	// Reverse the current drive orientation
-    	driveOrientation = driveOrientation * -1;
+    	reverseDrive = !reverseDrive;
     	// update the dashboard to reflect the current drive orientation
-    	SmartDashboard.putNumber("Drive Orientation: ", driveOrientation);
+    	SmartDashboard.putBoolean("Drive Orientation: ", reverseDrive);
     }
     
     public void zeroEncoders(){
@@ -101,6 +107,20 @@ public class DriveTrain extends Subsystem {
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
-    	drive.tankDrive(leftSpeed*driveOrientation, rightSpeed*driveOrientation, true);    	
+    	if(reverseDrive){
+    		drive.tankDrive(-1*rightSpeed, -1*leftSpeed, true);
+    	} else {
+    		drive.tankDrive(leftSpeed, rightSpeed, true);
+    	}
+    }
+    
+    public void setLights() {
+    	if(reverseDrive) {
+    		intakeLights.set(Relay.Value.kForward);
+    		gearLights.set(Relay.Value.kReverse);
+    	} else {
+    		gearLights.set(Relay.Value.kForward);
+    		intakeLights.set(Relay.Value.kReverse);
+    	}
     }
 }
