@@ -7,6 +7,7 @@ import org.usfirst.frc.team68.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -27,6 +28,7 @@ public class Climber extends Subsystem {
     private Climber() {
  
     	climberLatch = new DoubleSolenoid(RobotMap.PCM_MAIN, RobotMap.CLIMBER_LOCK, RobotMap.CLIMBER_UNLOCK);
+    	this.climberUnlock();
     	
     }
     
@@ -37,10 +39,13 @@ public class Climber extends Subsystem {
 	
 	 public void climberLock() {
 	    climberLatch.set(Value.kForward);
+    	SmartDashboard.putBoolean("IS CLIMBER LOCKED", true);
 	 }
 	    
 	 public void climberUnlock() {
     	climberLatch.set(Value.kReverse);
+    	SmartDashboard.putBoolean("IS CLIMBER LOCKED", false);
+
 	 }
 	 
 }

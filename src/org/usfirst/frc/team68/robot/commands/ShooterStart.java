@@ -1,9 +1,7 @@
 package org.usfirst.frc.team68.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-
 import org.usfirst.frc.team68.robot.Robot;
-import org.usfirst.frc.team68.robot.RobotMap;
 
 /**
  *
@@ -13,12 +11,14 @@ public class ShooterStart extends Command {
 	private boolean isFinished = false;
 	private double speed;
 	private double position;
+	private double feederSpeed;
 	
-	public ShooterStart(double shooterRPMValue, double hoodPosition) {
+	public ShooterStart(double shooterRPMValue, double hoodPosition, double shooterFeederSpeed) {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.shooter);
 		speed = shooterRPMValue;
 		position = hoodPosition;
+		feederSpeed = shooterFeederSpeed;
 	}
 
 	// Called just before this Command runs the first time
@@ -29,9 +29,10 @@ public class ShooterStart extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-//		Robot.shooter.setHood(position);
+		Robot.shooter.setHood(position);
 		Robot.shooter.setShooterSpeed(speed);
-		System.out.println("In ShooterStart Command.  Parm values : Hood = " + position + " Speed = " + speed);
+		Robot.shooter.setShooterFeederValue(feederSpeed);
+//		System.out.println("In ShooterStart Command.  Parm values : Hood = " + position + " Speed = " + speed);
 		isFinished = true;
 	}
 

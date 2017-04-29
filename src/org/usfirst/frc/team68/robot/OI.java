@@ -1,6 +1,5 @@
 package org.usfirst.frc.team68.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -83,6 +82,7 @@ public class OI {
 	// Constructor
 	private OI() {
 		
+		// Drivers Xbox Controller Bindings
 		xboxDrive = new XboxController(RobotMap.XBOX_DRIVE);	
 		xboxManipulate = new XboxController(RobotMap.XBOX_MANIPULATE);
 		
@@ -101,17 +101,28 @@ public class OI {
 		xboxDriveStart = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_BS);
 		xboxDriveStart.whenPressed(new DriveReverseOrientation());
 		
+		xboxDriveA = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_A);
+		xboxDriveA.whenPressed(new GearDeploy());
+		
+		xboxDriveB = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_B);
+		xboxDriveB.whenPressed(new GearDeployComplete());
+		
+//		xboxDriveBack = new JoystickButton(xboxDrive, RobotMap.XBOX_DRIVE_BB);
+//		xboxDriveBack.whenPressed(new DriveMMStraight());
+		
+		
+		// Manipulators Xbox Controller Bindings
 		xboxManipulateX = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_X);
-		xboxManipulateX.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_SHORT, RobotMap.SHOOTER_HOOD_SHORT));
+		xboxManipulateX.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_SHORT, RobotMap.SHOOTER_HOOD_SHORT, RobotMap.SHOOTER_FEEDER_SPEED_SHORT));
 
 		xboxManipulateA = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_A);
-		xboxManipulateA.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_MEDIUM, RobotMap.SHOOTER_HOOD_SHORT));
+		xboxManipulateA.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_MEDIUM, RobotMap.SHOOTER_HOOD_MEDIUM, RobotMap.SHOOTER_FEEDER_SPEED_MEDIUM));
 		
 		xboxManipulateB = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_B);
-		xboxManipulateB.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_LONG, RobotMap.SHOOTER_HOOD_LONG));
+		xboxManipulateB.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_LONG, RobotMap.SHOOTER_HOOD_LONG, RobotMap.SHOOTER_FEEDER_SPEED_LONG));
 		
 		xboxManipulateY = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_Y);
-		xboxManipulateY.whenPressed(new ShooterStart(RobotMap.SHOOTER_SPEED_STOP, RobotMap.SHOOTER_HOOD_STOP ));
+		xboxManipulateY.whenPressed(new ShooterStop());
 		
 		xboxManipulateLB = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_LB);
 		xboxManipulateLB.whileHeld(new IntakeForward());
@@ -120,15 +131,16 @@ public class OI {
 		xboxManipulateRB.whileHeld(new ShooterFeederForward());
 		
 		xboxManipulateStart = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_BS);
-		xboxManipulateStart.whenPressed(new GearPouchOut());
+		xboxManipulateStart.whenPressed(new GearGrabberDown());
 		
 		xboxManipulateBack = new JoystickButton(xboxManipulate, RobotMap.XBOX_MANIPULATE_BB);
-		xboxManipulateBack.whenPressed(new GearPouchIn());
-				
+		xboxManipulateBack.whenPressed(new GearGrabberUp());
+		
 	}
 	
 	// Custom user defined methods should go here
 	
+	// Drivetrain Tank Drive Left 
 	public double getLeftXboxJoystickValue() {
 		double leftAxis;
 		leftAxis = xboxDrive.getY(Hand.kLeft);
@@ -136,7 +148,8 @@ public class OI {
 		leftAxis = (Math.abs(leftAxis) < 0.1) ? 0 : leftAxis;
     	return leftAxis;
 	}
-	
+
+	// Drivetrain Tank Drive Right
 	public double getRightXboxJoystickValue() {
 		double rightAxis;
 		rightAxis = xboxDrive.getY(Hand.kRight);
@@ -145,6 +158,7 @@ public class OI {
     	return rightAxis;
 	}
 	
+	// Intake Reverse ( Out )
 	public double getXboxManipulateLT() {
 		double leftAxis;
 		leftAxis = xboxManipulate.getRawAxis(RobotMap.XBOX_MANIPULATE_LT);
@@ -153,6 +167,7 @@ public class OI {
     	return leftAxis;
 	}
 	
+	// Shooter Feeder Reverse ( Out )
 	public double getXboxManipulateRT() {
 		double rightAxis;
 		rightAxis = xboxManipulate.getRawAxis(RobotMap.XBOX_MANIPULATE_RT);
@@ -160,11 +175,38 @@ public class OI {
     	return rightAxis;
 	}
 	
-	public double getLeftXboxJoystick() {
+	// Gear Intake
+	public double getLeftXboxManipulatorJoystick() {
 		double leftAxis;
 		leftAxis = xboxManipulate.getY(Hand.kLeft);
+		leftAxis = (Math.abs(leftAxis) < 0.1) ? 0 : leftAxis;
     	return leftAxis;
+	}
+	
+	// Gear Intake
+	public double getRightXboxManipulatorJoystick() {
+		double rightAxis;
+		rightAxis = xboxManipulate.getY(Hand.kRight);
+		rightAxis = (Math.abs(rightAxis) < 0.1) ? 0 : rightAxis;
+    	return rightAxis;
 	}
 
 	
+	// Gear Grabber Up/Down
+	public double getLeftXboxManipulatorPOV() {
+		double povAngle;
+		povAngle = xboxManipulate.getPOV();
+		
+    	return povAngle;
+	}
+
+	// Intake Up/Down
+		public double getLeftXboxDrivePOV() 
+		{
+			double povAngle;
+			povAngle = xboxDrive.getPOV();
+			
+	    	return povAngle;
+		}
+
 }

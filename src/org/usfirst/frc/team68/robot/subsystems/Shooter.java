@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -26,7 +27,8 @@ public class Shooter extends Subsystem {
 	private Servo hoodServo;
 	
 	StringBuilder reportPID = new StringBuilder();
-	double targetSpeed = 0;
+	private double targetSpeed = 0;
+	private double feederSpeed = 0;
 
     
     // Declare Class variables here
@@ -41,20 +43,19 @@ public class Shooter extends Subsystem {
     }
     
     // Constructor
-    private Shooter() {
+    public Shooter() {
     	
     	shooterPrimary = new CANTalon(RobotMap.SHOOTER_PRIMARY_MOTOR);
        	shooterPrimary.changeControlMode(TalonControlMode.Speed);
     	this.setShooterSpeed(0);
 
-    	
-//    	shooterFollower = new CANTalon(RobotMap.SHOOTER_FOLLOWER_MOTOR);
+    	shooterFollower = new CANTalon(RobotMap.SHOOTER_FOLLOWER_MOTOR);
     	//shooter2.setInverted(true);
-//    	shooterFollower.changeControlMode(TalonControlMode.Follower);
-//    	shooterFollower.set(shooterPrimary.getDeviceID());
+    	shooterFollower.changeControlMode(TalonControlMode.Follower);
+    	shooterFollower.set(shooterPrimary.getDeviceID());
     	
-//    	shooterPrimary.enableBrakeMode(false);
-//    	shooterFollower.enableBrakeMode(false);
+    	shooterPrimary.enableBrakeMode(false);
+    	shooterFollower.enableBrakeMode(false);
     	
     	shooterPrimary.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
     	shooterPrimary.reverseSensor(true);
@@ -72,49 +73,66 @@ public class Shooter extends Subsystem {
     	shooterFeeder = new VictorSP(RobotMap.SHOOTER_FEEDER_MOTOR);
     	shooterFeeder.setInverted(true);
     	
-		hoodServo = new Servo(3);
-
-
+		hoodServo = new Servo(RobotMap.SHOOTER_HOOD_SERVO);
     }
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-    	setDefaultCommand(new ShooterFeederReverse() );
+    	setDefaultCommand(new ShooterFeederReverse());
     }
     
     // Create custom methods here
     public void setShooterSpeed(double speed) {
-       	
-    	targetSpeed = speed;
-       	if( shooterPrimary.getControlMode() == TalonControlMode.Speed )
-       		System.out.println("Speed");
+    	// set an instance variable to the incoming speed value.
+    	// It is referenced by the getPIDReport() method in this class
+    	//targetSpeed = speed;
     	
+    	// Ensure that we are in speed mode.  We need to do this
+    	// since we currently stop the shooter using percentVbus
+       	shooterPrimary.changeControlMode(TalonControlMode.Speed);
+
+       	// Publish the target speed to the dashboard
+       	targetSpeed = speed;
+    	SmartDashboard.putNumber("Shooter Target RPM Value: ", targetSpeed);
+
     	shooterPrimary.set(speed);
-    	System.out.println("Set the RPMs to :" + speed);
-   	
     }
     
     public void setShooterFeeder(double speed)  {
-/*    	if( this.getShooterFeederSpeed() < 0) {
-        	shooterFeeder.set(RobotMap.SHOOTER_FEEDER_SPEED_STOP);
-        	Timer.delay(.4);
-    	} 
-*/    	
+    	speed = (this.getShooterSpeed() >= targetSpeed*.99) ? speed : 0;
     	shooterFeeder.set(speed);
     }
     
+   public void setShooterFeederValue(double speed)  {	
+    	feederSpeed = speed;	
+    }
+   
+   public double getShooterFeederValue() {
+	   return feederSpeed;
+   }
+    
     public void setShooterFeederReverse(double speed)  {
-/*    	if( this.getShooterFeederSpeed() > 0) {
-        	shooterFeeder.set(RobotMap.SHOOTER_FEEDER_SPEED_STOP);
-        	Timer.delay(.4);
-    	}    	
-    	double setSpeed = 0;
-    	
-    	setSpeed = speed > 0 ? RobotMap.SHOOTER_FEEDER_SPEED_REVERSE : 0;
- */
+    	// We needed a separate method for variable control
+    	// to clear the shooter feeder should it become jammed.
+    	// The default command in this class will run
+    	// constantly looking for input from the Right Trigger
+    	// on the xbox manipulate controller
     	
     	shooterFeeder.set(speed);
   
+    }
+    
+    public void setShooterPID(double F, double P, double I, double D){
+    	shooterPrimary.setF(F);
+    	shooterPrimary.setP(P);
+    	shooterPrimary.setI(I);
+    	shooterPrimary.setD(D);
+    	this.setShooterSpeed(SmartDashboard.getNumber("Shooter Target RPM Value: ", targetSpeed));
+    }
+    
+    public void stopShooter() {
+       	shooterPrimary.changeControlMode(TalonControlMode.PercentVbus);
+    	shooterPrimary.set(0);
     }
     
     public double getShooterSpeed() {
@@ -127,6 +145,10 @@ public class Shooter extends Subsystem {
     
     public void setHood(double position) {
     	hoodServo.set(position);
+    }
+    
+    public double getHood() {
+    	return hoodServo.get();
     }
     
     public String getPIDReport() {

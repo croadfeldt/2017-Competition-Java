@@ -1,9 +1,7 @@
 package org.usfirst.frc.team68.robot.commands;
 
 import org.usfirst.frc.team68.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
-
 
 
 public class ClimberUnlock extends Command {
@@ -19,7 +17,7 @@ public class ClimberUnlock extends Command {
     protected void execute() {
     	Robot.climber.climberUnlock();
     	isFinished = true;
-    }
+    	}
 
     protected boolean isFinished() {
         return isFinished;

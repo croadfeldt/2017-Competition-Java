@@ -1,17 +1,21 @@
 package org.usfirst.frc.team68.robot.subsystems;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
-
 import org.usfirst.frc.team68.robot.RobotMap;
-
+import org.usfirst.frc.team68.robot.commands.GearIntake;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Gear extends Subsystem 
 {
     
-  private DoubleSolenoid gearPouch;
+  private DoubleSolenoid gearGrabber;
 	
     private static Gear gear;
+    private VictorSP gearIntakeMotor;
+    private boolean isGearDeploying = false;
 
     public static Gear getgear() 
     {
@@ -21,38 +25,44 @@ public class Gear extends Subsystem
     	return gear;
     }
     
+    // Constructor
     private Gear() 
     {
-    	gearPouch = new DoubleSolenoid(RobotMap.PCM_MAIN, RobotMap.GEAR_OUT, RobotMap.GEAR_IN); 
+    	gearGrabber = new DoubleSolenoid(RobotMap.PCM_MAIN, RobotMap.GEAR_OUT, RobotMap.GEAR_IN); 
+    	gearIntakeMotor = new VictorSP(RobotMap.GEAR_INTAKE_MOTOR);
     	
+    	// Start with the Gear Grabber in the UP position
+    	this.gearGrabberUp();
     }
     
-    public void initDefaultCommand() {
-    	//Gear pouch in or out when started up
+    public void initDefaultCommand() 
+    {
+    	setDefaultCommand(new GearIntake());
     }
     
-    public boolean isGearPouchOut() {
-    	if(gearPouch.get() == Value.kForward) {
-    		return true;
-    	} else {
-    		return false;
-    	}
+	public void gearGrabberDown() 
+    {
+		gearGrabber.set(Value.kForward);
+    	SmartDashboard.putBoolean("IS GEAR GRABBER DOWN", true);
     }
     
-    public void gearPouchOut() {
-    	gearPouch.set(Value.kForward);
+    public void gearGrabberUp() 
+    {
+    	gearGrabber.set(Value.kReverse);
+    	SmartDashboard.putBoolean("IS GEAR GRABBER DOWN", false);
     }
     
-    public void gearPouchIn() {
-    	gearPouch.set(Value.kReverse);
+    public void setIntakeSpeed(double speed) {
+    	gearIntakeMotor.set(speed);
     }
     
-    public void reverseCurrentGearPouchPosition() {
-    	if(gearPouch.get() == Value.kForward) {
-    		this.gearPouchIn(); 
-    	} else {
-    		this.gearPouchOut();
-    	}
+    public void setGearIsDeploying ( boolean value) {
+    	isGearDeploying = value;
     }
+    
+    public boolean isGearDeploying() {
+    	return isGearDeploying;
+    }
+    	
 }
 

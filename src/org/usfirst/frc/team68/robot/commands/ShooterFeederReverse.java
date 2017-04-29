@@ -1,6 +1,7 @@
 package org.usfirst.frc.team68.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team68.robot.Robot;
 
@@ -25,8 +26,11 @@ public class ShooterFeederReverse extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		
+		double speed;
 		Robot.shooter.setShooterFeederReverse(Robot.oi.getXboxManipulateRT()*-1);
+		speed = Robot.shooter.getShooterSpeed();
+		SmartDashboard.putNumber("Shooter RPM: ", speed);
+//		SmartDashboard.putNumber("Shooter RPM", speed);
 
 	}
 

@@ -9,12 +9,12 @@ import org.usfirst.frc.team68.robot.RobotMap;
 /**
  *
  */
-public class ShooterFeederForward extends Command {
+public class ShooterFeederStop extends Command {
 	
 	boolean isFinished = false;
 	private double feederSpeed = 0;
 	
-	public ShooterFeederForward() {
+	public ShooterFeederStop() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.shooter);
 	}
@@ -22,14 +22,14 @@ public class ShooterFeederForward extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		feederSpeed = Robot.shooter.getShooterFeederValue();
-//		SmartDashboard.putNumber("shooter feeder speed value is: ", feederSpeed);
+		feederSpeed = 0;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		Robot.shooter.setShooterFeeder(feederSpeed);
+		isFinished = true;
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -47,6 +47,6 @@ public class ShooterFeederForward extends Command {
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.shooter.setShooterFeeder(RobotMap.SHOOTER_FEEDER_SPEED_STOP);
+		this.end();
 	}
 }

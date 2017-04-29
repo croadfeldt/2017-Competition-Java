@@ -1,35 +1,30 @@
-package org.usfirst.frc.team68.robot.commands;
+/*package org.usfirst.frc.team68.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team68.robot.Robot;
 import org.usfirst.frc.team68.robot.RobotMap;
 
-/**
- *
- */
-public class ShooterFeederForward extends Command {
+public class HoodDown extends Command {
 	
 	boolean isFinished = false;
-	private double feederSpeed = 0;
 	
-	public ShooterFeederForward() {
+	public HoodDown() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.shooter);
+		requires(Robot.hood);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		feederSpeed = Robot.shooter.getShooterFeederValue();
-//		SmartDashboard.putNumber("shooter feeder speed value is: ", feederSpeed);
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.shooter.setShooterFeeder(feederSpeed);
+		Robot.hood.setHood(RobotMap.SHOOTER_HOOD_DOWN);
+		Robot.hood.setHood(Robot.oi.getRightXboxManipulateValue());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -47,6 +42,7 @@ public class ShooterFeederForward extends Command {
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.shooter.setShooterFeeder(RobotMap.SHOOTER_FEEDER_SPEED_STOP);
+		Robot.hood.setHood(RobotMap.SHOOTER_HOOD_STOP);
 	}
 }
+*/

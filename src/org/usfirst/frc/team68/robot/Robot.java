@@ -1,5 +1,7 @@
 
 package org.usfirst.frc.team68.robot;
+import org.usfirst.frc.team68.robot.subsystems.DriveCoachAssist;
+
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,13 +10,22 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team68.robot.commands.Auton1;
-import org.usfirst.frc.team68.robot.commands.Auton2;
-import org.usfirst.frc.team68.robot.commands.Auton3;
+import org.usfirst.frc.team68.robot.commands.AutonLeft;
+import org.usfirst.frc.team68.robot.commands.AutonCenterGear;
+import org.usfirst.frc.team68.robot.commands.AutonCenterGearShootRed;
+import org.usfirst.frc.team68.robot.commands.AutonCenterGearShootBlue;
+import org.usfirst.frc.team68.robot.commands.AutonRight;
+import org.usfirst.frc.team68.robot.commands.AutonShootTurnCrossLineBlue;
+import org.usfirst.frc.team68.robot.commands.AutonShootTurnCrossLineRed;
+import org.usfirst.frc.team68.robot.commands.AutonTest;
+import org.usfirst.frc.team68.robot.commands.ShooterStart;
+import org.usfirst.frc.team68.robot.commands.AutonNone;
+import org.usfirst.frc.team68.robot.commands.AutonRedRightGear;
 import org.usfirst.frc.team68.robot.subsystems.Climber;
 import org.usfirst.frc.team68.robot.subsystems.Compressor;
 import org.usfirst.frc.team68.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team68.robot.subsystems.Gear;
+//import org.usfirst.frc.team68.robot.subsystems.Hood;
 import org.usfirst.frc.team68.robot.subsystems.Intake;
 import org.usfirst.frc.team68.robot.subsystems.Shooter;
 
@@ -22,16 +33,8 @@ import org.usfirst.frc.team68.robot.subsystems.USBCamera;
 import org.usfirst.frc.team68.robot.subsystems.Vision;
 
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
 public class Robot extends IterativeRobot {
 	
-	// declare public class variables
 	public static RobotMap robotMap;
 	public static USBCamera usbCamera;
 	public static Climber climber;
@@ -40,8 +43,32 @@ public class Robot extends IterativeRobot {
 	public static Gear gear;
 	public static Intake intake;
 	public static Shooter shooter;
+	public static DriveCoachAssist DCA;
 	public static Vision vision;
 	public static OI oi;
+	
+	/* shooter debug PID variables
+	private double F;
+	private double P;
+	private double I;
+	private double D;
+	private double H;
+	*/
+	
+	//* Drive Left debug PID variables
+/*	private double FL;
+	private double PL;
+	private double IL;
+	private double DL;
+	private double leftTargetSpeed= 0;
+	
+	//* Drive Right debug PID variables
+/*	private double FR;
+	private double PR;
+	private double IR;
+	private double DR;
+	private double rightTargetSpeed= 0;
+*/
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -58,22 +85,52 @@ public class Robot extends IterativeRobot {
 		// Create a single instance of each Robot subsystem here
 		usbCamera = USBCamera.getCamera();
 		climber = Climber.getClimber();
+		
 		compressor = Compressor.getCompressor();
 		driveTrain = DriveTrain.getDriveTrain();
 		gear = Gear.getgear();
 		intake = Intake.getIntake();
-//		shooter2 = Shooter2.getShooter2();
 		shooter = Shooter.getShooter();
+		
+    	DCA = DriveCoachAssist.getDCA();
 //		vision = Vision.getVision();
-		
-		// Create a chooser and set the default for the dashboard
-		chooser.addDefault("Auton 1 (default)", new Auton1());
-		chooser.addObject("Auton 2", new Auton2());
-		chooser.addObject("Auton 3", new Auton3());
-		SmartDashboard.putData("Auto mode", chooser);
-		
+		       
+    	chooser.addDefault("Auton Center Gear ", new AutonCenterGear());
+        chooser.addObject("Auton None ", new AutonNone());
+        chooser.addObject("Auton RED Shoot Cross Line ", new AutonShootTurnCrossLineRed());
+        chooser.addObject("Auton BLUE Shoot Cross Line ", new AutonShootTurnCrossLineBlue());     
+        chooser.addObject("Auton Right Gear Peg ", new AutonRight());
+        chooser.addObject("Auton Left Gear Peg ", new AutonLeft());
+
+
+
+        SmartDashboard.putData("Auto mode", chooser);
+         
+         
 		// The OI class should be the last to be instantiated
 		oi = OI.getOI();
+		
+//		SmartDashboard.putData("Test Auton MM", new AutonTest());
+		
+/*		SmartDashboard.putNumber("SHOOTER_PID_F", 0);
+		SmartDashboard.putNumber("SHOOTER_PID_P", 0);
+		SmartDashboard.putNumber("SHOOTER_PID_I", 0);
+		SmartDashboard.putNumber("SHOOTER_PID_D", 0);
+		SmartDashboard.putNumber("Hood Position: ", .1);
+*/		
+/*		SmartDashboard.putNumber("DRIVE_LEFT_TARGET_SPEED: ",leftTargetSpeed);
+		SmartDashboard.putNumber("DRIVE_LEFT_PID_F", RobotMap.DRIVETRAIN_LEFT_PID_F);
+		SmartDashboard.putNumber("DRIVE_LEFT_PID_P", RobotMap.DRIVETRAIN_LEFT_PID_P);
+		SmartDashboard.putNumber("DRIVE_LEFT_PID_I", RobotMap.DRIVETRAIN_LEFT_PID_I);
+		SmartDashboard.putNumber("DRIVE_LEFT_PID_D", RobotMap.DRIVETRAIN_LEFT_PID_D);
+		
+/*		SmartDashboard.putNumber("DRIVE_RIGHT_PID_F", RobotMap.DRIVETRAIN_RIGHT_PID_F);
+		SmartDashboard.putNumber("DRIVE_RIGHT_PID_P", RobotMap.DRIVETRAIN_RIGHT_PID_P);
+		SmartDashboard.putNumber("DRIVE_RIGHT_PID_I", RobotMap.DRIVETRAIN_RIGHT_PID_I);
+		SmartDashboard.putNumber("DRIVE_RIGHT_PID_D", RobotMap.DRIVETRAIN_RIGHT_PID_D);
+		SmartDashboard.putNumber("DRIVE_RIGHT_TARGET_SPEED: ",rightTargetSpeed);
+*/
+
 	}
 
 	/**
@@ -104,6 +161,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		
+        Scheduler.getInstance().add(new ShooterStart(0, RobotMap.SHOOTER_HOOD_SHORT, 0));
+		Robot.driveTrain.zeroEncoders();
+		Robot.driveTrain.setShifterLow();
+		Robot.climber.climberUnlock();
+
 		autonomousCommand = chooser.getSelected();
 
 		/*
@@ -113,7 +176,10 @@ public class Robot extends IterativeRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-		// schedule the autonomous command (example)
+		//driveTrain.GetLeftFront().enableBrakeMode(true);
+		//driveTrain.GetRightFront().enableBrakeMode(true);
+		
+		//schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}
@@ -128,6 +194,17 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
+		Robot.driveTrain.setModePercentVbus();
+    	Robot.driveTrain.setShifterHigh();
+    	Robot.driveTrain.zeroEncoders();
+		Robot.climber.climberUnlock();
+		Robot.intake.intakeUp();
+        DCA.zeroTimer();
+        // ME
+//        Scheduler.getInstance().add(new IntakeStop());
+//        Scheduler.getInstance().add(new ShooterStop());
+//        Scheduler.getInstance().add(new ShooterFeederStop());
+
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -142,7 +219,38 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+/*		F = SmartDashboard.getNumber("SHOOTER_PID_F",F);
+		P = SmartDashboard.getNumber("SHOOTER_PID_P",P);
+		I = SmartDashboard.getNumber("SHOOTER_PID_I",I);
+    	D = SmartDashboard.getNumber("SHOOTER_PID_D",D);
+*/
+    	
+//    	H = SmartDashboard.getNumber("Hood Position: ",H);
+//    	shooter.setShooterPID(F,P,I,D);
+//    	shooter.setHood(H);
+    	
 //		System.out.println(shooter.getPIDReport());
+		
+/*		FL = SmartDashboard.getNumber("DRIVE_LEFT_PID_F",FL);
+		PL = SmartDashboard.getNumber("DRIVE_LEFT_PID_P",PL);
+		IL = SmartDashboard.getNumber("DRIVE_LEFT_PID_I",IL);
+    	DL = SmartDashboard.getNumber("DRIVE_LEFT_PID_D",DL);
+    	leftTargetSpeed = SmartDashboard.getNumber("DRIVE_LEFT_TARGET_SPEED: ", leftTargetSpeed);
+    	driveTrain.setDriveLeftPID(FL,PL,IL,DL,leftTargetSpeed);
+		System.out.println(driveTrain.getPIDReportLeft());
+
+		
+/*		FR = SmartDashboard.getNumber("DRIVE_RIGHT_PID_F",FR);
+		PR = SmartDashboard.getNumber("DRIVE_RIGHT_PID_P",PR);
+		IR = SmartDashboard.getNumber("DRIVE_RIGHT_PID_I",IR);
+    	DR = SmartDashboard.getNumber("DRIVE_RIGHT_PID_D",DR);
+    	rightTargetSpeed = SmartDashboard.getNumber("DRIVE_RIGHT_TARGET_SPEED: ", rightTargetSpeed);
+    	driveTrain.setDriveRightPID(FR,PR,IR,DR,rightTargetSpeed);
+		System.out.println(driveTrain.getPIDReportRight());
+*/		
+		
+
 	}
 
 	/**
@@ -152,4 +260,5 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 	}
+
 }
